@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css?family=Cormorant+Garamond:300i,400,700');
+
+@media screen and (max-width: 700px) {
+    .main-panel, .side-panel {}
+    .main-panel {}
+}
+
+body {
+    background: #141414;
+    font-family: 'Cormorant Garamond', serif;
+    color:#E6AF2E;
+    font-size: 20px;
+}
+
+.container {
+    max-width: 980px;
+    margin: 20px auto;
+}
+
+.main-panel {
+    overflow:scroll;
+    margin-left: 50px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 60%;
+    height: 100%;
+}
+
+.timeline {
+    margin-bottom: 100px;
+}
+
+.side-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width:40%;
+    height: 100%;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #282828;
+}
+
+button:focus {outline:0;}
+
+.button {
+  font-family: 'Cormorant Garamond', serif;
+  color: #E6AF2E;
+  font-size: 20px;
+  background: #282828;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  border: 0;
+  cursor: pointer;
+  width:100%
+}
+
+.no-choice {
+    height: 100%; }
+.two-choice {
+    height: 50%; }
+.three-choice {
+    height: 33.333%; }
+.four-choice {
+    height: 25%; }
+
+.teal {
+    background-color: #084C61;
+}
+.sprout {
+    background-color: #498467;
+}
+.purple {
+    background-color: #4B3F72;
+}
+.crimson {
+    background-color: #6F1D1B;
+}
+
+.char {
+    padding-top: 15px;
+    color: #282828;
+}
+
+.italic {
+    font-weight: 300;
+    font-style: italic; 
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }}
+@-moz-keyframes fadein { /* Firefox < 16 */
+    from { opacity: 0; }
+    to   { opacity: 1; }}
+@-webkit-keyframes fadein { /* Safari, Chrome and Opera > 12.1 */
+    from { opacity: 0; }
+    to   { opacity: 1; }}
+@-ms-keyframes fadein { /* Internet Explorer */
+    from { opacity: 0; }
+    to   { opacity: 1; }}
+@-o-keyframes fadein { /* Opera < 12.1 */
+    from { opacity: 0; }
+    to   { opacity: 1; }}
+
+
+@keyframes blink {50% { color: transparent }}
+.loader__dot { animation: 1s blink infinite }
+.loader__dot:nth-child(2) { animation-delay: 250ms }
+.loader__dot:nth-child(3) { animation-delay: 500ms }
+
+
+/* paper color :   background: #282828; */

@@ -1,0 +1,18 @@
+{
+  "name": "campfire",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watchify -v -d -t [ reactify --es6 ] main.js -o compiled.js",
+    "build": "NODE_ENV=production browserify -t [ reactify --es6 ] main.js | uglifyjs > compiled.js"
+  },
+  "author": "Alex Greene",
+  "dependencies": {
+    "react": "^0.13.2"
+  },
+  "devDependencies": {
+  }
+}
