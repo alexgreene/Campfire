@@ -3,9 +3,15 @@ var React = require('react');
 var InteractionPanel = React.createClass({
     selected(next, newText) {
         if (newText) {
-            this.props.updateWaitingMessage(newText)
+            this.props.updateWaitingMessage(newText);
+            var self = this;
+            setTimeout(function(){
+                self.props.nextMessage(next);
+            }, 1000);
+        } else {
+            this.props.nextMessage(next);
         }
-        this.props.nextMessage(next);
+        
     },
 
     render() {

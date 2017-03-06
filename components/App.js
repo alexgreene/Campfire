@@ -70,7 +70,6 @@ var App = React.createClass({
     },
 
     showNextMessage(next_id) {
-
         var completed = this.state.timeline;
         var next = this.state.storyboard[next_id];
         completed.push({    type: next.type,
