@@ -1,103 +1,116 @@
 var React = require('react');
 var Search = require('./Search');
-var MessageList = require('./MessageList');
+var Timeline = require('./Timeline');
 var InteractionPanel = require('./InteractionPanel');
 
 var App = React.createClass({
 
-	getInitialState(){
-		
-		var messages = [
-			{	w: "n",
-				t: "\n",
-				c: ""}, 
-			{	w: "d",
-				t: "Are you really Harry Potter?",
-				c: "Ron"}, 
-			{	w: "a",
-				t: "Harry nodded.",
-				c: "Harry"}, 
-			{	w: "d",
-				t: "Oh -well, I thought it might be one of Fred and George's jokes",
-				c: "Ron"}, 
-			{	w: "d",
-				t: "And have you really got -- you know...",
-				c: ""},
-			{	w: "a",
-				t: "He pointed at Harry's forehead.",
-				c: ""},
-			{	w: "a",
-				t: "Harry pulled back his bangs to show the lightning scar.",
-				c: "Harry"},
-			{	w: "a",
-				t: "Ron stared.",
-				c: "Ron"},
-			{	w: "d",
-				t: "So that's where You-Know-Who-",
-				c: ""},
-			{	w: "d",
-				t: "Yes",
-				c: "Harry"},
-			{	w: "d",
-				t: "but I can't remember it.",
-				c: ""},
-			{	w: "d",
-				t: "Nothing?",
-				c: "Ron"},
-			{	w: "d",
-				waiting: 't',
-				t: "_?_",
-				a: ["Nothing.", "Nope.", "Just a bright green light.", "Bloody hell."],
-				c: "Harry"},
-			{	w: "d",
-				t: "Are you really Harry Potter?",
-				c: "Ron"},
-			{	w: "d",
-				t: "Are you really Harry Potter?",
-				c: "Ron"},
-			];
+    getInitialState(){
 
-		return {
-			messages: messages,
-			cursor: 1,
-		};
-	},
+        var storyboard = {
+            0: {    type: "narr",
+                    text: "--\n",
+                    thing: "",
+                    next: 1},
+            1: {    type: "dial",
+                    text: "There is ",
+                    thing: "You",
+                    next: 2}, 
+            2: {    type: "dial",
+                    text: "_?_",
+                    choices: [  {text: "a house", next: 3},
+                                {text: "a cat", next: 3},
+                                {text: "a bat", next: 3},
+                                {text: "a frog", next: 3}],
+                    thing: "You"},
+            3: {    type: "dial",
+                    text: "in ",
+                    thing: "You",
+                    next: 4}, 
+            4: {    type: "dial",
+                    text: "_?_",
+                    choices: [  {text: "Atlanta", next: 5},
+                                {text: "Hogwarts", next: 5},
+                                {text: "New Orleans", next: 5},
+                                {text: "the eastern woodland realm", next: 5}],
+                    thing: "You"},
+            5: {    type: "dial",
+                    text: "they call the",
+                    thing: "You",
+                    next: 6}, 
+            6: {    type: "dial",
+                    text: "_?_",
+                    choices: [  {text: "shooting star", next: 9},
+                                {text: "rising sun", next: 8},
+                                {text: "shooting gun", next: 9}, 
+                                {text: "eastern woodland realm", next: 7}],
+                    thing: "You"},
+            7: {    type: "narr",
+                    text: "and thus you fulfilled your dream of traveling to the eastern woodland realm.",
+                    thing: "You",
+                    next: 7}, 
+            8: {    type: "narr",
+                    text: "and as you complete the song, the ghost of Eric Burdon appears and smiles encouragingly.",
+                    thing: "You",
+                    next: 6}, 
+            9: {    type: "act",
+                    text: "and you died.",
+                    thing: "You",
+                    next: 6}, 
+        };
 
-	showNextMessage() {
-		var checkNextCursorPos = this.state.cursor + 1
-		if (checkNextCursorPos < this.state.messages.length) {
-			this.setState({
-				messages: this.state.messages,
-				cursor: checkNextCursorPos
-			});
-		}
-	},
+        var timeline = [];
+        
+        return {
+            storyboard: storyboard,
+            timeline: timeline,
+            cursor: 0,
+            waiting: false
+        };
+    },
 
-	updateWaitingMessage(newText) {
-		var messages = this.state.messages;
-		var temp = messages[this.state.cursor - 1];
-		temp.t = newText;
-		temp.waiting = 'f';
-		messages[this.state.cursor - 1] = temp
-		this.setState({
-			messages: messages,
-			cursor: this.state.cursor
-		});
-	},
+    showNextMessage(next_id) {
 
-	render(){
-		return (
-			<div>
-				<div className="main-panel">
-					<h1>| Campfire</h1>
-					<MessageList messages={this.state.messages} cursor={this.state.cursor}/>
-				</div>
-				<InteractionPanel currentMessage={this.state.messages[this.state.cursor - 1]} 
-								  nextMessage={this.showNextMessage}
-								  updateWaitingMessage={this.updateWaitingMessage}/>
-			</div>
-		);
-	}
+        var completed = this.state.timeline;
+        var next = this.state.storyboard[next_id];
+        completed.push({    type: next.type,
+                            text: next.text,
+                            thing: next.thing})
+        this.setState({
+            storyboard: this.state.storyboard,
+            timeline: completed,
+            cursor: next_id,
+            waiting: next.choices ? true : false
+        });
+    },
+
+    updateWaitingMessage(newText) {
+        var completed = this.state.timeline;
+        var temp = completed[completed.length - 1]
+        temp.text = newText;
+        completed[this.state.cursor - 1] = temp
+        this.setState({
+            storyboard: this.state.storyboard,
+            timeline: completed,
+            cursor: this.state.cursor,
+            waiting: false
+        });
+    },
+
+    render(){
+        return (
+            <div>
+                <div className="main-panel">
+                    <h1>| Campfire</h1>
+                    <Timeline completed={this.state.timeline} waiting={this.state.waiting}/>
+                </div>
+                <InteractionPanel currentMessage={this.state.storyboard[this.state.cursor]} 
+                                  nextMessage={this.showNextMessage}
+                                  updateWaitingMessage={this.updateWaitingMessage}
+                                  waiting={this.state.waiting}/>
+            </div>
+        );
+    }
 });
 
 module.exports = App;

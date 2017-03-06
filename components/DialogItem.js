@@ -15,7 +15,7 @@ var DialogItem = React.createClass({
             animation: "fadein 1s",
         };
 
-        var thing = (this.props.waiting === 't') ? 
+        var thing = (this.props.waiting === true) ? 
         			<div>	
         				<span className="loader__dot">.</span>
         				<span className="loader__dot">.</span>
